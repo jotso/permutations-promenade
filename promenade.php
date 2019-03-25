@@ -7,11 +7,6 @@ class Promenade
 
     private $_programs;
 
-    public function __construct()
-    {
-        $this->_programs = self::PROGRAMS_START;
-    }
-
     public function dance(string $permutations)
     {
         $this->_programs = self::PROGRAMS_START;
@@ -40,20 +35,16 @@ class Promenade
 
     private function _exchange(int $a, int $b)
     {
-        $progA = substr($this->_programs, $a, 1);
-        $progB = substr($this->_programs, $b, 1);
-
-        $this->_programs = substr_replace($this->_programs, $progA, $b, 1);
-        $this->_programs = substr_replace($this->_programs, $progB, $a, 1);
+        $tempPrograms = $this->_programs;
+        $this->_programs = substr_replace($this->_programs, substr($tempPrograms, $a, 1), $b, 1);
+        $this->_programs = substr_replace($this->_programs, substr($tempPrograms, $b, 1), $a, 1);
     }
 
     private function _partner(string $a, string $b)
     {
-        $posA = strpos($this->_programs, $a);
-        $posB = strpos($this->_programs, $b);
-
-        $this->_programs = substr_replace($this->_programs, $b, $posA, 1);
-        $this->_programs = substr_replace($this->_programs, $a, $posB, 1);
+        $tempPrograms = $this->_programs;
+        $this->_programs = substr_replace($this->_programs, $b, strpos($tempPrograms, $a), 1);
+        $this->_programs = substr_replace($this->_programs, $a, strpos($tempPrograms, $b), 1);
     }
 
     public function getPrograms():string
